@@ -13,7 +13,7 @@
             :ripple="{ class: 'custom-color' }"
             @mouseenter="hoveredUser = user.id"
             @mouseleave="hoveredUser = null"
-            @click="write(user)"
+            @click="goToUserDetails(user.id)"
           >
             <v-card-title>{{ user.name }}</v-card-title>
             <v-card-subtitle>{{ user.email }}</v-card-subtitle>
@@ -34,6 +34,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 
@@ -41,6 +42,7 @@ export default defineComponent({
   name: 'UserCards',
   setup() {
     const store = useStore();
+    const router = useRouter();
 
     const users = computed(() => store.getters.allUsers);
 
@@ -49,8 +51,8 @@ export default defineComponent({
       store.dispatch('fetchUsers');
     });
 
-    const write = (user: { name: string }) => {
-      console.log(user.name);
+    const goToUserDetails = (userId: number) => {
+      router.push({ name: 'UserDetailsView', params: { id: userId } }); 
     };
 
     const hoveredUser = ref<number | null>(null);
@@ -58,7 +60,7 @@ export default defineComponent({
     return {
       users,
       hoveredUser,
-      write,
+      goToUserDetails,
     };
   }
 });
@@ -87,8 +89,7 @@ export default defineComponent({
 </style>
 <style>
 .custom-color{
-  color: #B2EBF2
-  ;
+  color: #B2EBF2;
 }
 
 </style>
