@@ -28,19 +28,36 @@
   import { ref } from 'vue';
   import { useRoute } from 'vue-router';
   import CommonLayout from '@/layouts/CommonLayout.vue';
+  import { onMounted } from 'vue';
 
   const store = useStore();
   const route = useRoute();
-  const user = computed(() => {
+  
+  const user = ref(
+    {
+      name: '',
+      username: '',
+      email: '',
+      phone: '',
+      website: ''
+    }
+  );
+
+  onMounted(async () => {
     const userId = route.params.id;
-    return store.getters.getUserById(userId);
+
+    if (userId) {
+      user.value = await store.getters.getUserById(userId);
+      console.log("user", user.value);
+    }
   });
+
 
   const initials = computed(() => {
     return user.value.name.split(' ').map(name => name[0]).join('');
   });
 
-  console.log(user.value, "asdasdasdasdsa");
+ 
   </script>
 
   <style scoped>

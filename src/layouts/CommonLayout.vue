@@ -48,6 +48,7 @@
     const selectedTab = ref('UserInfo'); 
 
     const selectTab = (component) => {
+        selectedTab.value = component;
         router.push({ name: component, params: { id: userId } });
     };
   

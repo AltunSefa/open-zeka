@@ -14,12 +14,6 @@ const routes: Array<RouteRecordRaw> = [
     name: 'home',
     component: HomeView
   },
-  
-  {
-    path: '/user/:id',
-    name: 'UserDetailsView',
-    component: UserDetailsView
-  },
   {
     path: '/user/:id/posts',
     name: 'UserPosts',
