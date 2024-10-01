@@ -2,58 +2,56 @@
   <v-app>
     <v-container fluid>
       <v-row>
-        <v-col cols="3" class="pa-0">
-          <NavbarComponent :user="user" :selected-tab="selectedTab" @tab-selected="updateSelectedTab" />
-        </v-col>
-
         <v-col cols="9">
-          <component :is="selectedTab" :user="user" />
+          <router-view :user="user" />
         </v-col>
       </v-row>
     </v-container>
   </v-app>
 </template>
 
-<script>
-import NavbarComponent from './NavbarComponent.vue';
-import UserPosts from './UserPosts.vue';
-import UserInfo from './UserInfo.vue';
-import UserComments from './UserComments.vue';
-import UserAlbums from './UserAlbums.vue';
-import UserPhotos from './UserPhotos.vue';
-import UserTodos from './UserTodos.vue';
+<script setup>
+import { useRouter } from 'vue-router';
+import NavbarComponent from '@/components/NavbarComponent.vue';
+import { defineProps } from 'vue';
+import { ref } from 'vue';
 
-export default {
-  components: {
-    NavbarComponent,
-    UserPosts,
-    UserComments,
-    UserAlbums,
-    UserPhotos,
-    UserTodos,
-    UserInfo,
+const router = useRouter();
+
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true,
   },
-  props: {
-    user: {
-      type: Object,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      selectedTab: 'UserInfo', 
-    };
-  },
-  methods: {
-    updateSelectedTab(tab) {
-      this.selectedTab = tab;
-    },
-  },
+});
+
+const selectedTab = ref('UserInfo');
+router.push({ name: 'UserInfo', params: { id: props.user.id } });
+
+
+function updateSelectedTab(tab) {
+  if (tab === 'UserPosts') {
+    router.push({ name: 'UserPosts', params: { id: props.user.id } });
+  } else if (tab === 'UserComments') {
+    router.push({ name: 'UserComments', params: { id: props.user.id } });
+  } else if (tab === 'UserAlbums') {
+    router.push({ name: 'UserAlbums', params: { id: props.user.id } });
+  } else if (tab === 'UserPhotos') {
+    router.push({ name: 'UserPhotos', params: { id: props.user.id } });
+  } else if (tab === 'UserTodos') {
+    router.push({ name: 'UserTodos', params: { id: props.user.id } });
+  } else if (tab === 'UserInfo') {
+    router.push({ name: 'UserInfo', params: { id: props.user.id } });
+  }
 }
 </script>
+
 
 <style scoped>
 .pa-0 {
   padding: 0 !important;
+}
+.custom-col {
+  max-width: 15% !important;
 }
 </style>

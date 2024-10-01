@@ -24,8 +24,12 @@ export const photos: Module<PhotosState, RootState> = {
   },
   actions: {
     async fetchPhotos({ commit }, userId: number) {
-      const response = await axios.get<Photo[]>(`https://jsonplaceholder.typicode.com/photos?userId=${userId}`);
-      commit('SET_PHOTOS', response.data);
+      const albumsResponse = await axios.get(`https://jsonplaceholder.typicode.com/albums?userId=${userId}`);
+      const albumIds = albumsResponse.data.map((album: { id: number }) => album.id);
+      const photoPromises = albumIds.map((id: number) => axios.get(`https://jsonplaceholder.typicode.com/albums/${id}/photos`));
+      const photosResponses = await Promise.all(photoPromises);
+      const photos = photosResponses.flatMap(response => response.data);
+      commit('SET_PHOTOS', photos);
     },
     selectPhoto({ commit }, photo: Photo) {
       commit('SET_SELECTED_PHOTO', photo);

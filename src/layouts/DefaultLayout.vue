@@ -26,6 +26,15 @@
     background: #333;
     color: white;
     padding: 1rem;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+  }
+
+  main {
+    padding-top: 4rem; /* Adjust this value based on the header height */
   }
   
   .header-title {

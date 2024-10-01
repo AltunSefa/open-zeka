@@ -1,38 +1,48 @@
 <template>
+  <CommonLayout >
   <div>
     <h2>fotolar</h2>
     <template v-if="photos.length">
-      <ul>
-        <li v-for="photo in photos" :key="photo.id">
-          {{ photo.title }}
-        </li>
-      </ul>
+      <v-row>
+        <v-col v-for="photo in photos" :key="photo.id" cols="12" sm="6" md="4">
+          <v-card>
+            <v-img :src="photo.url" :alt="photo.title"></v-img>
+            <v-card-title>{{ photo.title }}</v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
     </template>
     <template v-else>
       <p>Foto bulunamadı.</p>
     </template>
   </div>
+</CommonLayout>
 </template>
 
-<script>
+<script setup>
+import CommonLayout from '@/layouts/CommonLayout.vue'
 import { useStore } from 'vuex'
-import { computed } from 'vue'
-export default {
-  props: {
-    user: {
-      type: Object,
-      required: true
-    }
-  },
-  setup(props) {
-    console.log("user", props.user);
-    const store = useStore()
-    const photos = computed(() => store.getters.allPhotos)
-    store.dispatch('fetchPhotos', props.user.id)
-    console.log("photos", photos);
-    return {
-      photos
-    }  
+import { computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { ref } from 'vue'
+ 
+
+const store = useStore();
+const route = useRoute();
+const user = ref(null);
+const albums = ref([]);
+const photos = ref([]);
+
+
+
+onMounted( async() => {
+  const userId = route.params.id;
+  if (userId) {
+    user.value = store.getters.getUserById(userId);
+    await store.dispatch('fetchAlbums', userId);
+    albums.value = store.getters.allAlbums;
+    await store.dispatch('fetchPhotos', userId);
+    photos.value = store.getters.allPhotos;
   }
-}
+})
 </script>

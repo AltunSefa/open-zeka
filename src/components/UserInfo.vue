@@ -1,5 +1,6 @@
 <template>
-    <div>
+  <CommonLayout>
+    <div class="d-flex flex-column align-center">
     <v-card class="custom-card"  >
         <v-card-title>
             <v-avatar size="100">
@@ -18,31 +19,28 @@
         </v-card-text>
     </v-card>
     </div>
+  </CommonLayout>
   </template>
   
-  <script>
+  <script setup>
   import { useStore } from 'vuex';
   import { computed } from 'vue';
-  import VAvatar from 'vuetify';
-  const store = useStore();
-  export default {
-    components: {
-      VAvatar
-    },
-    props: {
-      user: {
-        type: Object,
-        required: true
-      }
-    },
-    computed: {
-      initials() {
-        return this.user.name.split(' ').map(name => name[0]).join('');
-      }
-    }
-    
+  import { ref } from 'vue';
+  import { useRoute } from 'vue-router';
+  import CommonLayout from '@/layouts/CommonLayout.vue';
 
-  }
+  const store = useStore();
+  const route = useRoute();
+  const user = computed(() => {
+    const userId = route.params.id;
+    return store.getters.getUserById(userId);
+  });
+
+  const initials = computed(() => {
+    return user.value.name.split(' ').map(name => name[0]).join('');
+  });
+
+  console.log(user.value, "asdasdasdasdsa");
   </script>
 
   <style scoped>

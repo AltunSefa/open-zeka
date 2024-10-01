@@ -31,11 +31,9 @@ export const users: Module<UsersState, RootState> = {
     allUsers(state): User[] {
       return state.users;
     },
-    getUserById: (state) => (id: string) => {
-      const userId = Number(id); 
-      const user = state.users.find((user) => user.id === userId);
-      state.selectedUser = user || null;
-      return user; 
+    getUserById: (state) => async(id: string) => {
+      const response = await axios.get<User>(`https://jsonplaceholder.typicode.com/users/${id}`);
+      return response.data;
     },
     getSelectedUser(state): User | null { 
       return state.selectedUser;

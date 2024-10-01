@@ -52,7 +52,7 @@ export default defineComponent({
     });
 
     const goToUserDetails = (userId: number) => {
-      router.push({ name: 'UserDetailsView', params: { id: userId } }); 
+      router.push({ name: 'UserInfo', params: { id: userId } }); 
     };
 
     const hoveredUser = ref<number | null>(null);

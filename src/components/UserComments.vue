@@ -1,40 +1,64 @@
 <template>
-    <div>
+  <CommonLayout>
+    <div class="d-flex flex-column align-center">
       <h2>Yorumlar</h2>
       <template v-if="comments.length">
-        <ul>
-          <li v-for="comment in comments" :key="comment.id">
-            {{ comment.body }}
-          </li>
-        </ul>
+        
+        <div v-for="comment in comments" :key="comment.id">
+          <v-card class="p-4 mb-5" style="width: 800px; height: 100px;">
+            <div class="div">
+              <div class="d-flex justify-space-center align-center mt-3" style=" padding-left: 15px;">
+                <div class="d-flex justify-space-center align-center mt-3">
+                  <v-avatar size="30" class="mr-3">
+                    {{ initials }}
+                  </v-avatar>
+                  <p class="mr-3" style="color: gray;">{{ user.username }}</p> 
+                </div>
+                <div class="d-flex flex-column justify-space-center align-center mt-3" style="text-align: left;">
+                  <p style="color: #90A4AE;">{{ comment.name }}</p>
+                  <p style="color: #546E7A;">{{ comment.body }}</p>
+                </div>
+              </div>
+            </div>
+          </v-card>
+        </div>
+        
       </template>
       <template v-else>
         <p>Yorum bulunamadı.</p>
       </template>
     </div>
-  </template>
+  </CommonLayout>
+</template>
   
-  <script>
+<script setup>
+  import CommonLayout from '@/layouts/CommonLayout.vue'
   import { useStore } from 'vuex'
-  import { computed } from 'vue'
-  export default {
-    props: {
-      user: {
-        type: Object,
-        required: true
-      }
-    }
-    ,
-    setup(props) {
-      const store = useStore()
-      const comments = computed(() => store.getters.allComments)
-      store.dispatch('fetchComments', props.user.id)
-      console.log("comments", comments);
-      return {
-        comments
-    }
+  import { computed, onMounted } from 'vue'
+  import { useRoute } from 'vue-router'
+  import { ref } from 'vue'
+  
 
-  }
-  }
-  </script>
+  const store = useStore();
+  const route = useRoute();
+  const user = ref(null);
+  const posts = ref([]);
+  const comments = ref([]);
+
+  onMounted(async () => {
+    const userId = route.params.id;
+    if (userId) {
+      user.value = await store.getters.getUserById(userId);
+      await store.dispatch('fetchComments', userId);
+      comments.value = store.getters.allComments;
+      await store.dispatch('fetchComments', userId);
+      comments.value = store.getters.allComments;
+    }
+  });
+
+  const initials = computed(() => {
+    return user.value.name.split(' ').map(name => name[0]).join('');
+  });
+
+</script>
   

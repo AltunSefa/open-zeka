@@ -16,32 +16,29 @@
   </v-list>
 </template>
 
-<script>
-export default {
-  props: {
-    selectedTab: {
-      type: String,
-      required: true,
-    },
+<script setup>
+import { ref, defineProps, defineEmits } from 'vue';
+
+const props = defineProps({
+  selectedTab: {
+    type: String,
+    required: true,
   },
-  data() {
-    return {
-      navItems: [
-        { title: 'Genel Bilgiler', icon: 'mdi-information', component: 'UserInfo' },
-        { title: 'Gönderiler', icon: 'mdi-post', component: 'UserPosts' },
-        { title: 'Yorumlar', icon: 'mdi-comment', component: 'UserComments' },
-        { title: 'Albümler', icon: 'mdi-album', component: 'UserAlbums' },
-        { title: 'Fotoğraflar', icon: 'mdi-image', component: 'UserPhotos' },
-        { title: 'Yapılacaklar', icon: 'mdi-check', component: 'UserTodos' },
-      ],
-      
-    };
-  },
-  methods: {
-    selectTab(component) {
-      this.$emit('tab-selected', component);
-    },
-  },
+});
+
+const emit = defineEmits(['tab-selected']);
+
+const navItems = ref([
+  { title: 'Genel Bilgiler', icon: 'mdi-information', component: 'UserInfo' },
+  { title: 'Gönderiler', icon: 'mdi-post', component: 'UserPosts' },
+  { title: 'Yorumlar', icon: 'mdi-comment', component: 'UserComments' },
+  { title: 'Albümler', icon: 'mdi-album', component: 'UserAlbums' },
+  { title: 'Fotoğraflar', icon: 'mdi-image', component: 'UserPhotos' },
+  { title: 'Yapılacaklar', icon: 'mdi-check', component: 'UserTodos' },
+]);
+
+const selectTab = (component) => {
+  emit('tab-selected', component);
 };
 </script>
 
@@ -55,11 +52,12 @@ export default {
 <style lang="scss">
 
 .v-list {
+  margin-top: 10px;
   cursor: pointer;
-  width: 60%;
+  width: 15%;
   height: 100vh;
-  background-color: #CFD8DC
-  ;
+  position: fixed;
+  background-color: #CFD8DC;
 
 } 
 

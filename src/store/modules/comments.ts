@@ -33,8 +33,13 @@ export const comments: Module<CommentsState, RootState> = {
     actions: {
         // Fetch comments from an API and commit the result to the state
         async fetchComments({ commit }, userId: number) {
-            const response = await axios.get<Comment[]>(`https://jsonplaceholder.typicode.com/comments?userId=${userId}`);
-            commit('SET_COMMENTS', response.data);
+            const postsResponse = await axios.get<{ id: number }[]>(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`);
+            const postIds = postsResponse.data.map(post => post.id);
+            const commentsPromises = postIds.map(postId => axios.get<Comment[]>(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`));
+            const commentsResponses = await Promise.all(commentsPromises);
+            const comments = commentsResponses.flatMap(response => response.data);
+
+            commit('SET_COMMENTS', comments);
         },
         // Select a comment by ID and commit the result to the state
         selectComment({ commit, state }, id: string) {
