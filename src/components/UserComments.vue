@@ -5,7 +5,7 @@
       <template v-if="comments.length">
         
         <div v-for="comment in paginatedComments" :key="comment.id">
-          <v-card class="p-4 mb-5" style="width: 800px; height: 100px;">
+          <v-card class="p-4 mb-5" style="max-width: 800px; max-height: 100px;">
             <div class="div">
               <div class="d-flex justify-space-center align-center mt-3" style=" padding-left: 15px;">
                 <div class="d-flex justify-space-center align-center mt-3">
