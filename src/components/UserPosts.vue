@@ -1,7 +1,7 @@
 <template>
   <CommonLayout>
     <div class="d-flex flex-column align-center">
-      <h2>Gönderiler</h2>
+      <h2>Posts</h2>
      
       <div v-if="true" class="div"> 
           <div  v-for="post in posts" :key="post.id" class="mb-5">

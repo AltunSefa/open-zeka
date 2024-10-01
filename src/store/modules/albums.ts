@@ -6,13 +6,13 @@ import { RootState } from '@/store/index';
 
 export interface AlbumsState {
     albums: Album[];
-    selectedAlbum: Album | null; // Seçili albüm için yeni state
+    selectedAlbum: Album | null; 
 }
 
 export const albums: Module<AlbumsState, RootState> = {
     state: {
         albums: [],
-        selectedAlbum: null, // Başlangıçta seçili albüm yok
+        selectedAlbum: null, 
     },
     mutations: {
         SET_ALBUMS(state, albums: Album[]) {

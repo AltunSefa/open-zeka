@@ -1,7 +1,7 @@
 <template>
   <CommonLayout > 
-    <div>
-      <h2>Albümler</h2>
+    <div class="d-flex flex-column align-center">
+      <h2>Albums</h2>
       <template v-if="albums.length" >
         
         <v-row class="mt-5">

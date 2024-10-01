@@ -1,22 +1,30 @@
 <template>
   <CommonLayout >
-  <div>
-    <h2>fotolar</h2>
+  <div class="d-flex flex-column align-center">
+    <h2 class="mb-5">Photos</h2>
     <template v-if="photos.length">
       <v-row>
-        <v-col v-for="photo in photos" :key="photo.id" cols="12" sm="6" md="4">
+        <v-col v-for="photo in paginatedPhotos" :key="photo.id" cols="12" sm="6" md="2">
           <v-card>
             <v-img :src="photo.url" :alt="photo.title"></v-img>
             <v-card-title>{{ photo.title }}</v-card-title>
           </v-card>
         </v-col>
       </v-row>
+      <v-pagination
+        v-model="currentPage"
+        :length="totalPages"
+        :total-visible="5"
+        @next="nextPage"
+        @previous="prevPage"
+      ></v-pagination>
     </template>
     <template v-else>
       <p>Foto bulunamadı.</p>
     </template>
   </div>
 </CommonLayout>
+
 </template>
 
 <script setup>
@@ -45,4 +53,37 @@ onMounted( async() => {
     photos.value = store.getters.allPhotos;
   }
 })
+
+const currentPage = ref(1);
+const itemsPerPage = ref(12);
+
+const paginatedPhotos = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return photos.value.slice(start, end);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(photos.value.length / itemsPerPage.value);
+});
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
+};
+
+
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
+};
+
 </script>
+<style>
+v-card {
+  width: 30%;
+  height: auto;
+}
+</style>

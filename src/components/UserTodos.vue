@@ -1,9 +1,9 @@
 <template>
   <CommonLayout>
     <div>
-      <h2>Yapılacaklar</h2>
+      <h2>Todos</h2>
         
-        <div v-for="todo in todos" :key="todo.id">
+        <div v-for="todo in paginatedTodos" :key="todo.id">
            <v-card class="mb-5" style="width: 100%;">
              <v-card-title>
               <v-icon left>mdi-account</v-icon>
@@ -30,9 +30,18 @@
              
             </v-card>
         </div>
-      
+        <v-pagination
+          v-model="currentPage"
+          :length="totalPages"
+          @next="nextPage"
+          :total-visible="5"
+          @previous="prevPage"
+        ></v-pagination>
+
     </div>
+    
     </CommonLayout>
+    
   </template>
   
   <script setup>
@@ -59,5 +68,31 @@
     
     }
   });
+
+  const currentPage = ref(1);
+  const itemsPerPage = ref(4);
+
+  const paginatedTodos = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage.value;
+    const end = start + itemsPerPage.value;
+    return todos.value.slice(start, end);
+  });
+
+  const totalPages = computed(() => {
+    return Math.ceil(todos.value.length / itemsPerPage.value);
+  });
+
+  const nextPage = () => {
+    
+    if (currentPage.value < totalPages.value) {
+      currentPage.value++;
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage.value > 1) {
+      currentPage.value--;
+    }
+  };
   </script>
   

@@ -1,7 +1,7 @@
 <template>
     <v-app>
       <v-container fluid>
-        <v-row>
+        <v-row >
           <v-col cols="3" class="pa-0 custom-col">
             <v-list density="compact" nav>
               <v-list-item-group>
@@ -20,7 +20,7 @@
             </v-list>
           </v-col>
   
-          <v-col cols="9">
+          <v-col cols="9" >
             <slot /> 
           </v-col>
         </v-row>
@@ -39,12 +39,12 @@
     const userId = route.params.id;
 
     const navItems = ref([
-        { title: 'Genel Bilgiler', icon: 'mdi-information', component: 'UserInfo', route:"info" },
-        { title: 'Gönderiler', icon: 'mdi-post', component: 'UserPosts', route:"posts" },
-        { title: 'Yorumlar', icon: 'mdi-comment', component: 'UserComments', route:"comments" },
-        { title: 'Albümler', icon: 'mdi-album', component: 'UserAlbums', route:"albums" },
-        { title: 'Fotoğraflar', icon: 'mdi-image', component: 'UserPhotos', route:"photos" },
-        { title: 'Yapılacaklar', icon: 'mdi-check', component: 'UserTodos', route:"todos" },
+        { title: 'User Info', icon: 'mdi-information', component: 'UserInfo', route:"info" },
+        { title: 'Posts', icon: 'mdi-post', component: 'UserPosts', route:"posts" },
+        { title: 'Comments', icon: 'mdi-comment', component: 'UserComments', route:"comments" },
+        { title: 'Albums', icon: 'mdi-album', component: 'UserAlbums', route:"albums" },
+        { title: 'Photos', icon: 'mdi-image', component: 'UserPhotos', route:"photos" },
+        { title: 'Todos', icon: 'mdi-check', component: 'UserTodos', route:"todos" },
     ]);
 
     const selectedTab = ref(''); 
@@ -69,6 +69,10 @@
 .active {
   background-color: #ECEFF1;
   box-shadow: 0 10px 20px #CFD8DC !important;
+}
+.v-col-3 {
+  width: 15% !important;
+  max-width: 16% !important;
 }
 </style>
 
