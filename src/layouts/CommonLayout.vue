@@ -8,7 +8,7 @@
                 <v-list-item
                   v-for="(item, index) in navItems"
                   :key="index"
-                  :class="{ active: selectedTab === item.component }"
+                  :class="{ active: selectedTab === item.route }"
                   class="justify-start"
                   :prepend-icon="item.icon"
                   @click="selectTab(item.component)"
@@ -31,21 +31,32 @@
 <script setup>
     import { ref, defineEmits } from 'vue'
     import { useRouter, useRoute } from 'vue-router';
+    import { onMounted } from 'vue';
 
     const router = useRouter();
+
     const route = useRoute();
     const userId = route.params.id;
 
     const navItems = ref([
-        { title: 'Genel Bilgiler', icon: 'mdi-information', component: 'UserInfo' },
-        { title: 'Gönderiler', icon: 'mdi-post', component: 'UserPosts' },
-        { title: 'Yorumlar', icon: 'mdi-comment', component: 'UserComments' },
-        { title: 'Albümler', icon: 'mdi-album', component: 'UserAlbums' },
-        { title: 'Fotoğraflar', icon: 'mdi-image', component: 'UserPhotos' },
-        { title: 'Yapılacaklar', icon: 'mdi-check', component: 'UserTodos' },
+        { title: 'Genel Bilgiler', icon: 'mdi-information', component: 'UserInfo', route:"info" },
+        { title: 'Gönderiler', icon: 'mdi-post', component: 'UserPosts', route:"posts" },
+        { title: 'Yorumlar', icon: 'mdi-comment', component: 'UserComments', route:"comments" },
+        { title: 'Albümler', icon: 'mdi-album', component: 'UserAlbums', route:"albums" },
+        { title: 'Fotoğraflar', icon: 'mdi-image', component: 'UserPhotos', route:"photos" },
+        { title: 'Yapılacaklar', icon: 'mdi-check', component: 'UserTodos', route:"todos" },
     ]);
 
-    const selectedTab = ref('UserInfo'); 
+    const selectedTab = ref(''); 
+    onMounted(() => {
+        const path = route.fullPath.split("/");
+        const lastRoute = path[path.length - 1];
+        selectedTab.value = lastRoute;
+    });
+  
+    
+
+
 
     const selectTab = (component) => {
         selectedTab.value = component;

@@ -2,7 +2,6 @@
     <div>
       <header>
         <h1 class="header-title">Open Zeka Interview Task App</h1>
-        
       </header>
       
       <main>
