@@ -57,12 +57,10 @@
   const user = ref(null)
   const todos = ref([])
   
-  console.log("çalıştı");
   onMounted(async () => {
     const userId = route.params.id;
     if (userId) {
       user.value = await store.getters.getUserById(userId);
-      console.log("userVALLL", user.value);
       await store.dispatch('fetchTodos', userId);
       todos.value = store.getters.allTodos;
     
@@ -82,17 +80,8 @@
     return Math.ceil(todos.value.length / itemsPerPage.value);
   });
 
-  const nextPage = () => {
-    
-    if (currentPage.value < totalPages.value) {
-      currentPage.value++;
-    }
-  };
+  
 
-  const prevPage = () => {
-    if (currentPage.value > 1) {
-      currentPage.value--;
-    }
-  };
+  
   </script>
   

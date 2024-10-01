@@ -67,18 +67,6 @@ const totalPages = computed(() => {
   return Math.ceil(photos.value.length / itemsPerPage.value);
 });
 
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++;
-  }
-};
-
-
-const prevPage = () => {
-  if (currentPage.value > 1) {
-    currentPage.value--;
-  }
-};
 
 </script>
 <style>
